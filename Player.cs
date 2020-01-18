@@ -97,7 +97,16 @@ public class Player
 
     }
 */
-    
+    public bool isTail(Game.Position pos){
+        foreach(Game.Position tailPos in tail){
+            if (pos.sameAs(tailPos)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public Position getRightPositition()
     {
         switch (direction)
@@ -121,13 +130,4 @@ public class Player
         }
     }
 
-    public bool isTail(Position position)
-    {
-        foreach(Position pos in tail)
-        {
-            if (pos.sameAs(position))
-                return true;
-        }
-        return false;
-    }
 }

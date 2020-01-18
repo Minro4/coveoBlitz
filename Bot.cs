@@ -10,18 +10,20 @@ namespace Blitz2020
         public static string NAME = "MyBot C#";
         public static Player.Move[] POSSIBLE_MOVES = (Player.Move[])Enum.GetValues(typeof(Player.Move));
         Player me;
+    
         Game game;
         bool first_move;
         Game.Position[] coins;
 
-        bool initedAStar = false;
         bool hasPath = false;
         int currentPathIndex;
         Position[] currentPath;
         Grid pfGrid;
 
+
+        Game.Position lastPos;
         public Bot()
-        {;
+        {
             first_move = true;
             // initialize some variables you will need throughout the game here
         }
@@ -34,6 +36,11 @@ namespace Blitz2020
             game = gameMessage.game;
             gameMessage.getPlayerMapById.TryGetValue(gameMessage.game.playerId, out me);
            // Player.Move[] legalMoves = getLegalMovesForCurrentTick(gameMessage);
+            if (me.killed){
+                first_move = true;
+                hasPath = false;
+            }
+
 
             if (first_move)
             {
@@ -41,8 +48,6 @@ namespace Blitz2020
                 first_move = false;
             }
 
-            if (!initedAStar)
-                initAStar();
             if (!hasPath)
                 initPath(getClosestCoin());
 
@@ -66,15 +71,19 @@ namespace Blitz2020
             pfGrid = new Grid(mapX,mapY,1);
             for(int i =0; i< mapX; i++){
                 for(int j=0; j<mapY;j++){
-                    TileType tile = game.getTileTypeAt(new Game.Position(i,j));
+                    Game.Position pos = new Game.Position(i,j);
+                    TileType tile = game.getTileTypeAt(pos);
+                    if(me.isTail(pos))
+                        pfGrid.BlockCell(new Position(i,j));
                     if (Game.isBlock(tile)){
                         pfGrid.BlockCell(new Position(i,j));
                     }
                 }
             }
-            initedAStar = true;
-            currentPathIndex = 0;
+            currentPathIndex = 1;
         }
+
+
 
         public Player.Move playPath(GameMessage message){
             Position nextPosAS = currentPath[currentPathIndex];
@@ -99,20 +108,21 @@ namespace Blitz2020
         }
 
         public Position[] initPath(Game.Position blitzPos){
-            
+            initAStar();
             hasPath = true;
-            currentPath= pfGrid.GetPath(toAStarPos(me.position),toAStarPos(blitzPos));
+            currentPath= pfGrid.GetPath(toAStarPos(me.position),toAStarPos(blitzPos),MovementPatterns.LateralOnly);
             return currentPath;
         }
 
         private Game.Position getClosestCoin(){
             if (coins.Length == 0)
-                return new Game.Position(0,0);
+                return me.spawnPosition;
 
             Game.Position min = coins[0];
             int minDist = min.distance(me.position);
             for(int i=1; i<coins.Length;i++){
                 Game.Position pos = coins[i];
+
                 if (pos.distance(me.position) < minDist){
                     min = pos;
                     minDist = pos.distance(me.position);
