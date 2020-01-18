@@ -23,8 +23,8 @@ namespace Blitz2020
         Position[] currentPath;
         Grid pfGrid;
 
-        int dangerCAc = 4;
-        int expendCount = 3;
+        int dangerCAc = 8;
+        int expendCount = 2;
         Game.Position lastPos;
 
         int dangerMeter = 1;
@@ -36,6 +36,9 @@ namespace Blitz2020
         {
             first_move = true;
             dangerMovesCount = 0;
+            
+            modeExpand =false;
+            modeReturn = false;
             // initialize some variables you will need throughout the game here
         }
 
