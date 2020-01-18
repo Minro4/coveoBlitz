@@ -101,6 +101,80 @@ namespace Blitz2020
             }
             return positions.ToArray();
         }
+        private Player.Move positionToMove(Game.Position position)
+        {
+            switch (me.direction)
+            {
+                case Player.Direction.UP:
+                {
+                    if(position.x > me.position.x)
+                    {
+                        return Player.Move.TURN_RIGHT;
+                    }
+                    else if (position.x < me.position.x)
+                    {
+                        return Player.Move.TURN_LEFT;
+                    }
+                    else
+                    {
+                        return Player.Move.FORWARD;
+                    }
+                    break;
+                }
+                case Player.Direction.DOWN:
+                {
+                    if(position.x < me.position.x)
+                    {
+                        return Player.Move.TURN_RIGHT;
+                    }
+                    else if (position.x > me.position.x)
+                    {
+                        return Player.Move.TURN_LEFT;
+                    }
+                    else
+                    {
+                        return Player.Move.FORWARD;
+                    }
+                    break;
+                }
+                case Player.Direction.RIGHT:
+                {
+                    if(position.y > me.position.y)
+                    {
+                        return Player.Move.TURN_RIGHT;
+                    }
+                    else if (position.y < me.position.y)
+                    {
+                        return Player.Move.TURN_LEFT;
+                    }
+                    else
+                    {
+                        return Player.Move.FORWARD;
+                    }
+                    break;
+                }
+                case Player.Direction.LEFT:
+                {
+                    if(position.y < me.position.y)
+                    {
+                        return Player.Move.TURN_RIGHT;
+                    }
+                    else if (position.y > me.position.y)
+                    {
+                        return Player.Move.TURN_LEFT;
+                    }
+                    else
+                    {
+                        return Player.Move.FORWARD;
+                    }
+                    break;
+                }
+                default:
+                {
+                    return Player.Move.FORWARD;
+                }
+            }
+        }
         private bool checkSuicideFoward()
         {
            return checkSuicide(me,game,me.getFowardPositition());
