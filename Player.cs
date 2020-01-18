@@ -72,13 +72,13 @@ public class Player
 
 
     public bool canGoTo(Game.Position pos){
-        if (direction == Direction.UP && pos.y == position.y-1)
+        if (direction == Direction.UP && pos.y-1 == position.y)
             return false;
-        if (direction == Direction.DOWN && pos.y == position.y+1)
+        if (direction == Direction.DOWN && pos.y+1 == position.y)
             return false;
-        if (direction == Direction.LEFT && pos.x == position.x -1)
+        if (direction == Direction.LEFT && pos.x == position.x +1)
             return false;
-        if (direction == Direction.RIGHT && pos.x == position.x+1)
+        if (direction == Direction.RIGHT && pos.x == position.x-1)
             return false;
         return true;
 
