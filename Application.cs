@@ -16,16 +16,20 @@ public static class Application
     }
 
 
-public async static Task startClient(string address = "192.168.99.101:8765")
+public async static Task startClient(string address = "127.0.0.1:8765")
     {
         using (ClientWebSocket webSocket = new ClientWebSocket())
         {
+            string? token = Environment.GetEnvironmentVariable("TOKEN");
+
+            if (token == null)
+                address = "192.168.99.101:8765";
+
             Uri serverUri = new Uri("ws://" + address);
             Bot bot = new Bot();
 
             await webSocket.ConnectAsync(serverUri, CancellationToken.None);
 
-            string? token = Environment.GetEnvironmentVariable("TOKEN");
             string registerPayload = "";
 
             if (token == null)
