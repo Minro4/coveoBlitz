@@ -27,6 +27,12 @@ public class Game
         {
             return x == position.x && y == position.y;
         }
+
+        public int distance(Position pos)
+        {
+
+            return Math.Abs(x-pos.x) + Math.Abs(y-pos.y);
+        }
     }
 
     public class PointOutOfMapException : Exception

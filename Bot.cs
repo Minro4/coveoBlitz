@@ -101,13 +101,24 @@ namespace Blitz2020
         public Position[] initPath(Game.Position blitzPos){
             
             hasPath = true;
-            return pfGrid.GetPath(toAStarPos(me.position),toAStarPos(blitzPos));
+            currentPath= pfGrid.GetPath(toAStarPos(me.position),toAStarPos(blitzPos));
+            return currentPath;
         }
 
         private Game.Position getClosestCoin(){
             if (coins.Length == 0)
                 return new Game.Position(0,0);
-            return coins[0];
+
+            Game.Position min = coins[0];
+            int minDist = min.distance(me.position);
+            for(int i=1; i<coins.Length;i++){
+                Game.Position pos = coins[i];
+                if (pos.distance(me.position) < minDist){
+                    min = pos;
+                    minDist = pos.distance(me.position);
+                }
+            }
+            return min;
         }
 
         private Position toAStarPos(Game.Position pos){
