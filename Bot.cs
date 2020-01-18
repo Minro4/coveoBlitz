@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using RoyT.AStar;
+using
 
 namespace Blitz2020
 {
@@ -10,6 +11,12 @@ namespace Blitz2020
         public static Player.Move[] POSSIBLE_MOVES = (Player.Move[])Enum.GetValues(typeof(Player.Move));
         Player me;
         Game game;
+
+        bool initedAStar = false;
+        bool hasPath = false;
+        int currentPathIndex;
+        Position[] currentPath;
+        Grid pfGrid;
 
         public Bot()
         {
@@ -25,19 +32,71 @@ namespace Blitz2020
             game = gameMessage.game;
             gameMessage.getPlayerMapById.TryGetValue(gameMessage.game.playerId, out me);
             Player.Move[] legalMoves = getLegalMovesForCurrentTick(gameMessage);
+
+            if (!initedAStar)
+                initAStar();
+            if (!hasPath)
+                initPath(..);
+
+            return playPath();
+
             // You can print out a pretty version of the map but be aware that 
             // printing out long strings can impact your bot performance (30 ms in average).
             // Console.WriteLine(gameMessage.game.prettyMap);
-            if (legalMoves.Length == 0)
+           /* if (legalMoves.Length == 0)
             {
                 return Player.Move.FORWARD;
             }
-            return legalMoves[random.Next(legalMoves.Length)];
+            return legalMoves[random.Next(legalMoves.Length)];*/
         }
 
-      /*  public initAStar(){
-            int mapX = game.map.
-        }*/
+        public void initAStar(){
+            int mapX = game.map.Length;
+            int mapY = game.map[0].Length;
+
+            pfGrid = new Grid(mapX,mapY,1);
+            for(int i =0; i< mapX; i++){
+                for(int j=0; j<mapY;j++){
+                    TileType tile = game.getTileTypeAt(new Game.Position(i,j));
+                    if (Game.isBlock(tile)){
+                        pfGrid.BlockCell(new Position(i,j));
+                    }
+                }
+            }
+            initedAStar = true;
+            currentPathIndex = 0;
+        }
+
+        public Player.Move playPath(){
+            Position nextPosAS = currentPath[currentPathIndex];
+            Game.Position nextPos = new Game.Position(nextPosAS.X,nextPosAS.Y);
+            currentPathIndex++;
+            if (currentPathIndex >= currentPath.Length){
+                hasPath = false;
+            }
+            if (!me.canGoTo(nextPos)){
+                bool isSuicideLeft = checkSuicideLeft();
+                bool isSuicideRight = checkSuicideRight();
+                if (isSuicideLeft && !isSuicideRight){
+                    return Player.Move.TURN_RIGHT;
+                }
+                if (!isSuicideLeft && isSuicideRight){
+                    return Player.Move.TURN_LEFT;
+                }
+                return Player.Move.FORWARD;
+            }
+            return PositionToMove(nextPos);
+        }
+
+        public Position[] initPath(Game.Position blitzPos){
+            
+            hasPath = true;
+            return pfGrid.GetPath(toAStarPos(me.position),toAStarPos(blitzPos));
+        }
+
+        private Position toAStarPos(Game.Position pos){
+            return new Position(pos.x,pos.y);
+        }
 
         public Player.Move[] getLegalMovesForCurrentTick(GameMessage gameMessage)
         {                 

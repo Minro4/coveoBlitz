@@ -93,6 +93,10 @@ public class Game
         }
     }
 
+
+    public static bool isBlock(TileType tile){
+        return tile == TileType.ASTEROIDS || tile == TileType.BLACK_HOLE;
+    }
     public String getRawTileValueAt(Position position)
     {
         this.validateTileExists(position);

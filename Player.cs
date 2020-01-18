@@ -70,6 +70,34 @@ public class Player
         }
     }
 
+
+    public bool canGoTo(Game.Position pos){
+        if (direction == Direction.UP && pos.y == position.y-1)
+            return false;
+        if (direction == Direction.DOWN && pos.y == position.y+1)
+            return false;
+        if (direction == Direction.LEFT && pos.x == position.x -1)
+            return false;
+        if (direction == Direction.RIGHT && pos.x == position.x+1)
+            return false;
+        return true;
+
+    }
+
+    /*public bool posToMove(Game.Position pos){
+        if (direction == Direction.UP && pos.y == position.y-1)
+            return false;
+        if (direction == Direction.DOWN && pos.y == position.y+1)
+            return false;
+        if (direction == Direction.LEFT && pos.x == position.x -1)
+            return false;
+        if (direction == Direction.RIGHT && pos.x == position.x+1)
+            return false;
+        return true;
+
+    }
+*/
+    
     public Position getRightPositition()
     {
         switch (direction)
