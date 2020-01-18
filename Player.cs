@@ -32,22 +32,18 @@ public class Player
             case Direction.LEFT:
                 {
                     return new Position(position.x - 1, position.y);
-                    break;
                 }
             case Direction.RIGHT:
                 {
                     return new Position(position.x + 1, position.y);
-                    break;
                 }
             case Direction.UP:
                 {
                     return new Position(position.x, position.y - 1);
-                    break;
                 }
             default: //(Down)
                 {
                     return new Position(position.x, position.y + 1);
-                    break;
                 }
         }
     }
@@ -58,22 +54,18 @@ public class Player
             case Direction.LEFT:
                 {
                     return new Position(position.x, position.y + 1);
-                    break;
                 }
             case Direction.RIGHT:
                 {
                     return new Position(position.x, position.y - 1);
-                    break;
                 }
             case Direction.UP:
                 {
                     return new Position(position.x - 1, position.y);
-                    break;
                 }
             default: //(Down)
                 {
                     return new Position(position.x + 1, position.y);
-                    break;
                 }
         }
     }
@@ -85,22 +77,18 @@ public class Player
             case Direction.LEFT:
                 {
                     return new Position(position.x, position.y - 1);
-                    break;
                 }
             case Direction.RIGHT:
                 {
                     return new Position(position.x, position.y + 1);
-                    break;
                 }
             case Direction.UP:
                 {
                     return new Position(position.x + 1, position.y);
-                    break;
                 }
             default: //(Down)
                 {
                     return new Position(position.x - 1, position.y);
-                    break;
                 }
         }
     }

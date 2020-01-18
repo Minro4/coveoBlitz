@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using RoyT.AStar;
 
 namespace Blitz2020
 {
@@ -33,6 +34,10 @@ namespace Blitz2020
             }
             return legalMoves[random.Next(legalMoves.Length)];
         }
+
+      /*  public initAStar(){
+            int mapX = game.map.
+        }*/
 
         public Player.Move[] getLegalMovesForCurrentTick(GameMessage gameMessage)
         {                 

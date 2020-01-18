@@ -10,5 +10,6 @@
     <Compile Remove="__MACOSX\**" />
     <EmbeddedResource Remove="__MACOSX\**" />
     <None Remove="__MACOSX\**" />
+    <PackageReference Include="RoyT.Astar" Version="2.1.0" />
   </ItemGroup>
 </Project>
