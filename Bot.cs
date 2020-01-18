@@ -14,6 +14,7 @@ namespace Blitz2020
         Game game;
         bool first_move;
         Game.Position[] coins;
+        Game.Position[] safes;
 
         bool hasPath = false;
         int currentPathIndex;
@@ -43,6 +44,7 @@ namespace Blitz2020
 
             
             coins = findCoins(gameMessage);
+            safes = findSafes(gameMessage);
 
             if (!hasPath)
                 initPath(getClosestCoin());
@@ -312,6 +314,48 @@ namespace Blitz2020
 
             return false;
 
+        }
+        private Game.Position[] findSafes(GameMessage gameMessage)
+        {
+            List<Game.Position> positions = new List<Game.Position>();
+
+            int s = gameMessage.game.getMapSize();
+            for (int i = 0; i < s;i++)
+            {
+                for (int j = 0; j < s;j++)
+                {
+                    Game.Position p = new Game.Position(i,j);
+                    if (game.getTileTypeAt(p) == TileType.CONQUERED||game.getTileTypeAt(p) == TileType.CONQUERED_PLANET)
+                    {
+                        positions.Add(p);
+                    }
+
+                }
+            }
+            
+            return positions.ToArray();
+        }
+        private Game.Position getClosestSafe(){
+            if (safes.Length == 0)
+                return me.spawnPosition;
+
+            Game.Position min = safes[0];
+            int minDist = min.distance(me.position);
+            for(int i=1; i<safes.Length;i++){
+                Game.Position pos = safes[i];
+
+                if (pos.distance(me.position) < minDist){
+                    min = pos;
+                    minDist = pos.distance(me.position);
+                }
+            }
+            Console.WriteLine(min.ToString());
+            return min;
+        }
+        private int getStepToSafety(Game.Position safetyPos){
+        
+            Position [] pathToSafety= pfGrid.GetPath(toAStarPos(me.position),toAStarPos(safetyPos),MovementPatterns.LateralOnly);
+            return pathToSafety.Lenght;
         }
 
 
