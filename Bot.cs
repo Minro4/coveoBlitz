@@ -10,10 +10,12 @@ namespace Blitz2020
         public static Player.Move[] POSSIBLE_MOVES = (Player.Move[])Enum.GetValues(typeof(Player.Move));
         Player me;
         Game game;
+        bool first_move;
+        Game.Position[] coins;
 
         public Bot()
-        {
-            
+        {;
+            first_move = true;
             // initialize some variables you will need throughout the game here
         }
 
@@ -28,6 +30,11 @@ namespace Blitz2020
             // You can print out a pretty version of the map but be aware that 
             // printing out long strings can impact your bot performance (30 ms in average).
             // Console.WriteLine(gameMessage.game.prettyMap);
+            if (first_move)
+            {
+                coins = findCoins(gameMessage);
+                first_move = false;
+            }
             if (legalMoves.Length == 0)
             {
                 return Player.Move.FORWARD;
@@ -41,9 +48,6 @@ namespace Blitz2020
 
         public Player.Move[] getLegalMovesForCurrentTick(GameMessage gameMessage)
         {                 
-
-
-
             return checkWalls(POSSIBLE_MOVES);
         }
 
@@ -78,7 +82,25 @@ namespace Blitz2020
 
             return possMoves.ToArray();
         }
+        private Game.Position[] findCoins(GameMessage gameMessage)
+        {
+            List<Game.Position> positions = new List<Game.Position>();
 
+            int s = gameMessage.game.getMapSize();
+            for (int i = 0; i < s;i++)
+            {
+                for (int j = 0; j < s;j++)
+                {
+                    Game.Position p = new Game.Position(i,j);
+                    if (game.getTileTypeAt(p) == TileType.BLITZIUM)
+                    {
+                        positions.Add(p);
+                    }
+
+                }
+            }
+            return positions.ToArray();
+        }
         private bool checkSuicideFoward()
         {
            return checkSuicide(me,game,me.getFowardPositition());
