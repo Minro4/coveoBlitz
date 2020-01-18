@@ -1,5 +1,4 @@
 using static Game;
-
 public class Player
 {
     public enum Move

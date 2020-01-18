@@ -1,0 +1,13 @@
+d:\Coveo\coveoBlitz\obj\Debug\netcoreapp3.1\Application.csprojAssemblyReference.cache
+d:\Coveo\coveoBlitz\obj\Debug\netcoreapp3.1\Application.AssemblyInfoInputs.cache
+d:\Coveo\coveoBlitz\obj\Debug\netcoreapp3.1\Application.AssemblyInfo.cs
+d:\Coveo\coveoBlitz\bin\Debug\netcoreapp3.1\Application.exe
+D:\Coveo\coveoBlitz\bin\Debug\netcoreapp3.1\Application.deps.json
+D:\Coveo\coveoBlitz\bin\Debug\netcoreapp3.1\Application.runtimeconfig.json
+D:\Coveo\coveoBlitz\bin\Debug\netcoreapp3.1\Application.runtimeconfig.dev.json
+d:\Coveo\coveoBlitz\bin\Debug\netcoreapp3.1\Application.dll
+d:\Coveo\coveoBlitz\bin\Debug\netcoreapp3.1\Application.pdb
+d:\Coveo\coveoBlitz\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+D:\Coveo\coveoBlitz\obj\Debug\netcoreapp3.1\Application.csproj.CopyComplete
+d:\Coveo\coveoBlitz\obj\Debug\netcoreapp3.1\Application.dll
+d:\Coveo\coveoBlitz\obj\Debug\netcoreapp3.1\Application.pdb

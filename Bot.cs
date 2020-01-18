@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Blitz2020
 {
@@ -6,34 +7,35 @@ namespace Blitz2020
     {
         public static string NAME = "MyBot C#";
         public static Player.Move[] POSSIBLE_MOVES = (Player.Move[])Enum.GetValues(typeof(Player.Move));
+        Player me;
+        Game game;
 
         public Bot()
         {
+            
             // initialize some variables you will need throughout the game here
         }
 
         public Player.Move nextMove(GameMessage gameMessage)
         {
             // Here is where the magic happens, for now the moves are random. I bet you can do better ;)
-            Player.Move[] legalMoves = getLegalMovesForCurrentTick(gameMessage);
+            
             Random random = new Random();
-
+            game = gameMessage.game;
+            gameMessage.getPlayerMapById.TryGetValue(gameMessage.game.playerId, out me);
+            Player.Move[] legalMoves = getLegalMovesForCurrentTick(gameMessage);
             // You can print out a pretty version of the map but be aware that 
             // printing out long strings can impact your bot performance (30 ms in average).
             // Console.WriteLine(gameMessage.game.prettyMap);
-
+            if (legalMoves.Length == 0)
+            {
+                return Player.Move.FORWARD;
+            }
             return legalMoves[random.Next(legalMoves.Length)];
         }
 
         public Player.Move[] getLegalMovesForCurrentTick(GameMessage gameMessage)
-        {        
-            
-
-
-            Player me;
-            gameMessage.getPlayerMapById.TryGetValue(gameMessage.game.playerId, out me);
-
-            
+        {                 
 
 
 
@@ -42,8 +44,8 @@ namespace Blitz2020
 
         private Player.Move[] checkWalls(Player.Move[] fromMoves)
         {
-            ArrayList<Player.Move> possMoves = new ArrayList<Player.Move>();
-            possMoves.addAll(fromMoves);
+            List<Player.Move> possMoves = new List<Player.Move>();
+            possMoves.AddRange(fromMoves);
             foreach (Player.Move move in fromMoves)
             {
                 switch (move)
@@ -51,49 +53,49 @@ namespace Blitz2020
                     case Player.Move.FORWARD:
                         {
                             if (checkSuicideFoward())
-                                possMoves.remove(move);
+                                possMoves.Remove(move);
                             break;
                         }
-                    case Player.Move.LEFT:
+                    case Player.Move.TURN_LEFT:
                         {
                             if (checkSuicideLeft())
-                                possMoves.remove(move);
+                                possMoves.Remove(move);
                             break;
                         }
                     default: //(Right)
                         {
                             if (checkSuicideRight())
-                                possMoves.remove(move);
+                                possMoves.Remove(move);
                             break;
                         }
                 }
             }
 
-            return possMoves.toArray();
+            return possMoves.ToArray();
         }
 
         private bool checkSuicideFoward()
         {
-           return checkSuicide(me.getFowardPositition());
+           return checkSuicide(me,game,me.getFowardPositition());
         }
         private bool checkSuicideLeft()
         {
-            return checkSuicide(me.getLeftPositition());
+            return checkSuicide(me,game,me.getLeftPositition());
         }
         private bool checkSuicideRight()
         {
-            return checkSuicide(me.getRightPositition());
+            return checkSuicide(me,game,me.getRightPositition());
         }
-        private bool checkSuicide(Player me, Game game, Position position)
+        private bool checkSuicide(Player me, Game game, Game.Position position)
         {
             //Position fPos = me.getFowardPositition();
-            TyleType tile = game.getTileTypeAt(position);
+            TileType tile = game.getTileTypeAt(position);
             if (tile == TileType.ASTEROIDS || tile == TileType.BLACK_HOLE)
             {
                 return true;
             }
 
-            if (me.isTail(fPos))
+            if (me.isTail(position))
             {
                 return true;
             }
