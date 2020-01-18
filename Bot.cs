@@ -110,7 +110,7 @@ namespace Blitz2020
         public Position[] initPath(Game.Position blitzPos){
             initAStar();
             hasPath = true;
-            currentPath= pfGrid.GetPath(toAStarPos(me.position),toAStarPos(blitzPos));
+            currentPath= pfGrid.GetPath(toAStarPos(me.position),toAStarPos(blitzPos),MovementPatterns.LateralOnly);
             return currentPath;
         }
 
