@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\will1\\OneDrive\\_Uni\\Sherb\\CoveoBlitz\\competition\\coveoBlitz\\Application.csproj": {}
+    "D:\\Coveo\\coveoBlitz\\Application.csproj": {}
   },
   "projects": {
-    "C:\\Users\\will1\\OneDrive\\_Uni\\Sherb\\CoveoBlitz\\competition\\coveoBlitz\\Application.csproj": {
+    "D:\\Coveo\\coveoBlitz\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\will1\\OneDrive\\_Uni\\Sherb\\CoveoBlitz\\competition\\coveoBlitz\\Application.csproj",
+        "projectUniqueName": "D:\\Coveo\\coveoBlitz\\Application.csproj",
         "projectName": "Application",
-        "projectPath": "C:\\Users\\will1\\OneDrive\\_Uni\\Sherb\\CoveoBlitz\\competition\\coveoBlitz\\Application.csproj",
-        "packagesPath": "C:\\Users\\will1\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\will1\\OneDrive\\_Uni\\Sherb\\CoveoBlitz\\competition\\coveoBlitz\\obj\\",
+        "projectPath": "D:\\Coveo\\coveoBlitz\\Application.csproj",
+        "packagesPath": "C:\\Users\\felix\\.nuget\\packages\\",
+        "outputPath": "D:\\Coveo\\coveoBlitz\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\will1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\felix\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -47,7 +47,7 @@
             },
             "RoyT.Astar": {
               "target": "Package",
-              "version": "(, )"
+              "version": "[2.1.0, )"
             }
           },
           "imports": [

@@ -11,3 +11,4 @@ d:\Coveo\coveoBlitz\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 D:\Coveo\coveoBlitz\obj\Debug\netcoreapp3.1\Application.csproj.CopyComplete
 d:\Coveo\coveoBlitz\obj\Debug\netcoreapp3.1\Application.dll
 d:\Coveo\coveoBlitz\obj\Debug\netcoreapp3.1\Application.pdb
+d:\Coveo\coveoBlitz\bin\Debug\netcoreapp3.1\RoyT.AStar.dll
