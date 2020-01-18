@@ -44,8 +44,8 @@ namespace Blitz2020
             
             coins = findCoins(gameMessage);
 
-            if (!hasPath)
-                initPath(getClosestCoin());
+            //if (!hasPath)
+            initPath(getClosestCoin());
 
             return playPath(gameMessage);
 
