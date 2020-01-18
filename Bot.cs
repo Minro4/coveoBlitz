@@ -41,12 +41,8 @@ namespace Blitz2020
                 hasPath = false;
             }
 
-
-            if (first_move)
-            {
-                coins = findCoins(gameMessage);
-                first_move = false;
-            }
+            
+            coins = findCoins(gameMessage);
 
             if (!hasPath)
                 initPath(getClosestCoin());
@@ -86,12 +82,25 @@ namespace Blitz2020
 
 
         public Player.Move playPath(GameMessage message){
+            if (currentPath.Length == 0)
+            {
+                Random random = new Random();
+                Player.Move[] legalMoves = getLegalMovesForCurrentTick(message);
+                try {
+                    return legalMoves[random.Next(legalMoves.Length)]; 
+                }
+                catch{
+                    return Player.Move.FORWARD;
+                }
+            }
             Position nextPosAS = currentPath[currentPathIndex];
+            Console.WriteLine(currentPath.ToString());
+            Console.WriteLine(me.direction.ToString());
+            Console.WriteLine(nextPosAS.ToString());
             Game.Position nextPos = new Game.Position(nextPosAS.X,nextPosAS.Y);
             currentPathIndex++;
             if (currentPathIndex >= currentPath.Length){
                 hasPath = false;
-                coins = findCoins(message);
             }
             if (!me.canGoTo(nextPos)){
                 bool isSuicideLeft = checkSuicideLeft();
@@ -111,6 +120,7 @@ namespace Blitz2020
             initAStar();
             hasPath = true;
             currentPath= pfGrid.GetPath(toAStarPos(me.position),toAStarPos(blitzPos),MovementPatterns.LateralOnly);
+            currentPathIndex = 1;
             return currentPath;
         }
 
@@ -128,6 +138,7 @@ namespace Blitz2020
                     minDist = pos.distance(me.position);
                 }
             }
+            Console.WriteLine(min.ToString());
             return min;
         }
 
@@ -188,6 +199,14 @@ namespace Blitz2020
                     }
 
                 }
+            }
+            try
+            {
+                //Console.WriteLine(positions[0].ToString());
+            }
+            catch
+            {
+                Console.WriteLine("no more coins");
             }
             return positions.ToArray();
         }
