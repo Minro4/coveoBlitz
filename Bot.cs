@@ -15,16 +15,25 @@ namespace Blitz2020
         bool first_move;
         Game.Position[] coins;
 
+        int dangerMovesCount = 0;
+
         bool hasPath = false;
         int currentPathIndex;
         Position[] currentPath;
         Grid pfGrid;
 
-
+        int dangerCAc = 4;
+        int expendCount = 3;
         Game.Position lastPos;
+
+
+        bool modeReturn = false;
+        bool modeExpand = false;
+        Game.Position expendTarget;
         public Bot()
         {
             first_move = true;
+            dangerMovesCount = 0;
             // initialize some variables you will need throughout the game here
         }
 
@@ -35,17 +44,54 @@ namespace Blitz2020
             Random random = new Random();
             game = gameMessage.game;
             gameMessage.getPlayerMapById.TryGetValue(gameMessage.game.playerId, out me);
+
+            initAStar();
            // Player.Move[] legalMoves = getLegalMovesForCurrentTick(gameMessage);
             if (me.killed){
                 first_move = true;
                 hasPath = false;
+                dangerMovesCount = 0;
             }
 
-            
+            Game.Position target;
             coins = findCoins(gameMessage);
+            if (game.getTileTypeAt(me.position) != TileType.CONQUERED){
+               
+                if (dangersdsdfghfsd){
+                    modeReturn = true;
+                    modeExpand = false;
+                }
+
+                if (modeReturn){
+                    target = returnToSafe();
+                }
+                if (dangerMovesCount >= dangerCAc)
+                {
+                    dangerMovesCount = 0;
+
+                    modeExpand = true;
+                    expendTarget = getExpand();
+                    
+                }
+                if (modeExpand){
+                    target = expendTarget;
+
+                }else{
+                    modeReturn = false;
+                    dangerMovesCount++;
+                    target = getClosestCoin();
+                }
+            }
+            else{
+                dangerMovesCount = 0;
+                    modeReturn = false;
+                     dangerMovesCount++;
+                    target = getClosestCoin();
+                }
+            
 
             if (!hasPath)
-                initPath(getClosestCoin());
+                initPath(target);
 
             return playPath(gameMessage);
 
@@ -59,6 +105,74 @@ namespace Blitz2020
             }
             return legalMoves[random.Next(legalMoves.Length)];*/
         }
+
+        private Game.Position returnToSafe(){
+            return getClosad;
+        }
+
+        private Game.Position getExpand(){
+            switch(me.direction){
+                case Player.Direction.UP:{
+                    Game.Position rightPos = new Game.Position(me.position.x + expendCount, me.position.y);
+                    Position[] pathToExpend = pfGrid.GetPath(toAStarPos(me.position),toAStarPos(rightPos),MovementPatterns.LateralOnly);
+                    if (pathToExpend.Length -1 <= expendCount){
+                        return rightPos;
+                    }
+                    Game.Position leftPos = new Game.Position(me.position.x + expendCount, me.position.y);
+                    Position[] pathToExpend2 = pfGrid.GetPath(toAStarPos(me.position),toAStarPos(rightPos),MovementPatterns.LateralOnly);
+                    if (pathToExpend2.Length -1 <= expendCount){
+                        return leftPos;
+                    }
+                    return getCloasdasdasdasd;
+                }
+
+                case Player.Direction.DOWN:{
+                    Game.Position rightPos = new Game.Position(me.position.x + expendCount, me.position.y);
+                    Position[] pathToExpend = pfGrid.GetPath(toAStarPos(me.position),toAStarPos(rightPos),MovementPatterns.LateralOnly);
+                    if (pathToExpend.Length -1 <= expendCount){
+                        return rightPos;
+                    }
+                    Game.Position leftPos = new Game.Position(me.position.x + expendCount, me.position.y);
+                    Position[] pathToExpend2 = pfGrid.GetPath(toAStarPos(me.position),toAStarPos(rightPos),MovementPatterns.LateralOnly);
+                    if (pathToExpend2.Length -1 <= expendCount){
+                        return leftPos;
+                    }
+                    return getCloasdasdasdasd;
+                }
+
+
+                case Player.Direction.LEFT:{
+                    Game.Position rightPos = new Game.Position(me.position.x , me.position.y+expendCount);
+                    Position[] pathToExpend = pfGrid.GetPath(toAStarPos(me.position),toAStarPos(rightPos),MovementPatterns.LateralOnly);
+                    if (pathToExpend.Length -1 <= expendCount){
+                        return rightPos;
+                    }
+                    Game.Position leftPos = new Game.Position(me.position.x, me.position.y-expendCount);
+                    Position[] pathToExpend2 = pfGrid.GetPath(toAStarPos(me.position),toAStarPos(rightPos),MovementPatterns.LateralOnly);
+                    if (pathToExpend2.Length -1 <= expendCount){
+                        return leftPos;
+                    }
+                    return getCloasdasdasdasd;
+                }
+
+
+                  case default:{
+                    Game.Position rightPos = new Game.Position(me.position.x , me.position.y+expendCount);
+                    Position[] pathToExpend = pfGrid.GetPath(toAStarPos(me.position),toAStarPos(rightPos),MovementPatterns.LateralOnly);
+                    if (pathToExpend.Length -1 <= expendCount){
+                        return rightPos;
+                    }
+                    Game.Position leftPos = new Game.Position(me.position.x, me.position.y-expendCount);
+                    Position[] pathToExpend2 = pfGrid.GetPath(toAStarPos(me.position),toAStarPos(rightPos),MovementPatterns.LateralOnly);
+                    if (pathToExpend2.Length -1 <= expendCount){
+                        return leftPos;
+                    }
+                    return getCloasdasdasdasd;
+                }s
+            }
+        }
+
+
 
         public void initAStar(){
             int mapX = game.map.Length;
@@ -78,6 +192,7 @@ namespace Blitz2020
             }
             currentPathIndex = 1;
         }
+
 
 
 
@@ -117,7 +232,7 @@ namespace Blitz2020
         }
 
         public Position[] initPath(Game.Position blitzPos){
-            initAStar();
+           // initAStar();
             hasPath = true;
             currentPath= pfGrid.GetPath(toAStarPos(me.position),toAStarPos(blitzPos),MovementPatterns.LateralOnly);
             currentPathIndex = 1;
