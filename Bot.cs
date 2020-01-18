@@ -95,7 +95,7 @@ namespace Blitz2020
                 }
                 return Player.Move.FORWARD;
             }
-            return PositionToMove(nextPos);
+            return positionToMove(nextPos);
         }
 
         public Position[] initPath(Game.Position blitzPos){
