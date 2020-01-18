@@ -26,16 +26,82 @@ namespace Blitz2020
         }
 
         public Player.Move[] getLegalMovesForCurrentTick(GameMessage gameMessage)
-        {
-            // You should define here what moves are legal for your current position and direction so that your bot does not send a lethal move
-
-            // Your bot moves are done according to its direction, if you are in the DOWN direction.
-            // A TURN_RIGHT move will make your bot move left in the map visualization (replay or logs)
+        {        
             
+
+
             Player me;
             gameMessage.getPlayerMapById.TryGetValue(gameMessage.game.playerId, out me);
 
-            return POSSIBLE_MOVES;
+            
+
+
+
+            return checkWalls(POSSIBLE_MOVES);
         }
+
+        private Player.Move[] checkWalls(Player.Move[] fromMoves)
+        {
+            ArrayList<Player.Move> possMoves = new ArrayList<Player.Move>();
+            possMoves.addAll(fromMoves);
+            foreach (Player.Move move in fromMoves)
+            {
+                switch (move)
+                {
+                    case Player.Move.FORWARD:
+                        {
+                            if (checkSuicideFoward())
+                                possMoves.remove(move);
+                            break;
+                        }
+                    case Player.Move.LEFT:
+                        {
+                            if (checkSuicideLeft())
+                                possMoves.remove(move);
+                            break;
+                        }
+                    default: //(Right)
+                        {
+                            if (checkSuicideRight())
+                                possMoves.remove(move);
+                            break;
+                        }
+                }
+            }
+
+            return possMoves.toArray();
+        }
+
+        private bool checkSuicideFoward()
+        {
+           return checkSuicide(me.getFowardPositition());
+        }
+        private bool checkSuicideLeft()
+        {
+            return checkSuicide(me.getLeftPositition());
+        }
+        private bool checkSuicideRight()
+        {
+            return checkSuicide(me.getRightPositition());
+        }
+        private bool checkSuicide(Player me, Game game, Position position)
+        {
+            //Position fPos = me.getFowardPositition();
+            TyleType tile = game.getTileTypeAt(position);
+            if (tile == TileType.ASTEROIDS || tile == TileType.BLACK_HOLE)
+            {
+                return true;
+            }
+
+            if (me.isTail(fPos))
+            {
+                return true;
+            }
+
+            return false;
+
+        }
+
+
     }
 }

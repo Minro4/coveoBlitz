@@ -22,6 +22,11 @@ public class Game
         {
             return String.Format("({0}, {1})", x, y);
         }
+
+        public bool sameAs(Position position)
+        {
+            return x == position.x && y == position.y;
+        }
     }
 
     public class PointOutOfMapException : Exception
@@ -101,4 +106,6 @@ public class Game
             throw new PointOutOfMapException(position, this.getMapSize());
         }
     }
+
+  
 }
