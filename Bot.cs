@@ -80,8 +80,51 @@ namespace Blitz2020
             }
             currentPathIndex = 1;
         }
-
-
+        
+        private bool isInDanger(GameMessage gameMessage,int danger_meter)
+        {
+            int steps_to_safety = getStepToSafety(getClosestSafe());
+            int steps_to_die = 99999;
+            foreach(Player player in gameMessage.players)
+            {
+                if (player.id == me.id)
+                {
+                    continue;
+                }
+                Game.Position  enenemy_pos = player.position;
+                Game.Position endangered_tail = getClosestTail(enenemy_pos);
+                int current_enemy_kill_potential = pfGrid.GetPath(toAStarPos(endangered_tail),toAStarPos(enenemy_pos)).Length;
+                if (steps_to_die > current_enemy_kill_potential)
+                {
+                    steps_to_die = current_enemy_kill_potential;
+                }
+            }
+            if (steps_to_die  + danger_meter < steps_to_safety)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private Game.Position getClosestTail(Game.Position enenemy_pos)
+        {
+            if (me.tail.Length == 0)
+            {
+                return me.position;
+            }
+            Game.Position min  = me.tail[0];
+            int mindist = 999;
+            foreach (Game.Position tail in me.tail)
+            {
+                if (tail.distance(enenemy_pos) < mindist)
+                {
+                    min = tail;
+                }
+            }
+            return min;
+        }
 
         public Player.Move playPath(GameMessage message){
             if (currentPath.Length == 0)
@@ -327,7 +370,10 @@ namespace Blitz2020
                     Game.Position p = new Game.Position(i,j);
                     if (game.getTileTypeAt(p) == TileType.CONQUERED||game.getTileTypeAt(p) == TileType.CONQUERED_PLANET)
                     {
-                        positions.Add(p);
+                        if (game.getTileOwnerId(p) == me.id)
+                        {
+                            positions.Add(p);
+                        }
                     }
 
                 }
@@ -354,8 +400,8 @@ namespace Blitz2020
         }
         private int getStepToSafety(Game.Position safetyPos){
         
-            Position [] pathToSafety= pfGrid.GetPath(toAStarPos(me.position),toAStarPos(safetyPos),MovementPatterns.LateralOnly);
-            return pathToSafety.Lenght;
+            Position[] pathToSafety = pfGrid.GetPath(toAStarPos(me.position),toAStarPos(safetyPos),MovementPatterns.LateralOnly);
+            return pathToSafety.Length;
         }
 
 

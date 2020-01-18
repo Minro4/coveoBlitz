@@ -33,6 +33,7 @@ public class Game
 
             return Math.Abs(x-pos.x) + Math.Abs(y-pos.y);
         }
+
     }
 
     public class PointOutOfMapException : Exception
