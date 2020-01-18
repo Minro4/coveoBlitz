@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using RoyT.AStar;
-using
+
 
 namespace Blitz2020
 {
@@ -33,24 +33,26 @@ namespace Blitz2020
             Random random = new Random();
             game = gameMessage.game;
             gameMessage.getPlayerMapById.TryGetValue(gameMessage.game.playerId, out me);
-            Player.Move[] legalMoves = getLegalMovesForCurrentTick(gameMessage);
+           // Player.Move[] legalMoves = getLegalMovesForCurrentTick(gameMessage);
 
-            if (!initedAStar)
-                initAStar();
-            if (!hasPath)
-                initPath(..);
-
-            return playPath();
-
-            // You can print out a pretty version of the map but be aware that 
-            // printing out long strings can impact your bot performance (30 ms in average).
-            // Console.WriteLine(gameMessage.game.prettyMap);
             if (first_move)
             {
                 coins = findCoins(gameMessage);
                 first_move = false;
             }
-            if (legalMoves.Length == 0)
+
+            if (!initedAStar)
+                initAStar();
+            if (!hasPath)
+                initPath(getClosestCoin());
+
+            return playPath(gameMessage);
+
+            // You can print out a pretty version of the map but be aware that 
+            // printing out long strings can impact your bot performance (30 ms in average).
+            // Console.WriteLine(gameMessage.game.prettyMap);
+          
+          /*  if (legalMoves.Length == 0)
             {
                 return Player.Move.FORWARD;
             }
@@ -74,12 +76,13 @@ namespace Blitz2020
             currentPathIndex = 0;
         }
 
-        public Player.Move playPath(){
+        public Player.Move playPath(GameMessage message){
             Position nextPosAS = currentPath[currentPathIndex];
             Game.Position nextPos = new Game.Position(nextPosAS.X,nextPosAS.Y);
             currentPathIndex++;
             if (currentPathIndex >= currentPath.Length){
                 hasPath = false;
+                coins = findCoins(message);
             }
             if (!me.canGoTo(nextPos)){
                 bool isSuicideLeft = checkSuicideLeft();
@@ -101,6 +104,12 @@ namespace Blitz2020
             return pfGrid.GetPath(toAStarPos(me.position),toAStarPos(blitzPos));
         }
 
+        private Game.Position getClosestCoin(){
+            if (coins.Length == 0)
+                return new Game.Position(0,0);
+            return coins[0];
+        }
+
         private Position toAStarPos(Game.Position pos){
             return new Position(pos.x,pos.y);
         }
@@ -109,6 +118,7 @@ namespace Blitz2020
         {                 
             return checkWalls(POSSIBLE_MOVES);
         }
+
 
         private Player.Move[] checkWalls(Player.Move[] fromMoves)
         {
