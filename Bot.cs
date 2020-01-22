@@ -267,7 +267,7 @@ namespace Blitz2020
 
 
         public Player.Move playPath(GameMessage message){
-            if (currentPath.Length == 0)
+            if (currentPath.Length <= 1)
             {
                 Random random = new Random();
                 Player.Move[] legalMoves = getLegalMovesForCurrentTick(message);
